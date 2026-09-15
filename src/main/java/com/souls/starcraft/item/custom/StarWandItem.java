@@ -1,0 +1,50 @@
+package com.souls.starcraft.item.custom;
+
+import com.souls.starcraft.attachment.ModDataAttachments;
+import com.souls.starcraft.entity.projectile.StarlightBoltProjectile;
+import com.souls.starcraft.mana.StarlightMana;
+import com.souls.starcraft.network.StarlightManaPayload;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
+
+public class StarWandItem extends Item {
+    public StarWandItem(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use (
+        Level level,
+        Player player,
+        InteractionHand hand
+    ) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (!level.isClientSide()) {
+            StarlightMana mana = player.getData(ModDataAttachments.STARLIGHT_MANA);
+
+            if (mana.consumeMana(10.0F)) {
+                System.out.println("STAR WAND! Mana remaining: " + mana.getMana());
+
+                //launch projectile
+                StarlightBoltProjectile projectile = new StarlightBoltProjectile(level, player);
+
+                projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.0F, 0.0F);
+                level.addFreshEntity(projectile);
+
+                if (player instanceof ServerPlayer serverPlayer) {
+                    PacketDistributor.sendToPlayer(serverPlayer, new StarlightManaPayload(mana.getMana(), mana.getMaxMana()));
+                }
+            }
+        }
+
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+}

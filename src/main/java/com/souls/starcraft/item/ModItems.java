@@ -1,6 +1,7 @@
 package com.souls.starcraft.item;
 
 import com.souls.starcraft.StarCraft;
+import com.souls.starcraft.item.custom.StarWandItem;
 
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -11,7 +12,7 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(StarCraft.MODID);
 
     public static final DeferredItem<Item> AQUAMARINE = ITEMS.register("aquamarine", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> STAR_WAND = ITEMS.register("star_wand", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> STAR_WAND = ITEMS.register("star_wand", () -> new StarWandItem(new Item.Properties().stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
