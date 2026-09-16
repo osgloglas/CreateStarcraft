@@ -3,6 +3,8 @@ package com.souls.starcraft.block;
 import java.util.function.Supplier;
 
 import com.souls.starcraft.StarCraft;
+import com.souls.starcraft.block.custom.StarlightBasinBlock;
+import com.souls.starcraft.block.custom.StarlightCrafterBlock;
 import com.souls.starcraft.item.ModItems;
 
 import net.minecraft.world.item.BlockItem;
@@ -21,6 +23,10 @@ public class ModBlocks {
         .strength(1f).sound(SoundType.SAND)));
     public static final DeferredBlock<Block> MARBLE_BLOCK = registerBlock("marble_block", () -> new Block(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> STARLIGHT_CRAFTER = registerBlock("starlight_crafter", () -> new StarlightCrafterBlock(BlockBehaviour.Properties.of()
+        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE).noOcclusion()));
+    public static final DeferredBlock<Block> STARLIGHT_BASIN = registerBlock("starlight_basin", () -> new StarlightBasinBlock(BlockBehaviour.Properties.of()
+        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE).noOcclusion()));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);

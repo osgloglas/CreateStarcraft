@@ -8,16 +8,18 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class StarlightCrafterBlock extends Block {
-    public StarlightCrafterBlock(Properties properties) {
+public class StarlightBasinBlock extends Block {
+    public StarlightBasinBlock(Properties properties) {
         super(properties);
     }
 
     private static final VoxelShape SHAPE = Shapes.or(
-        Block.box(1, 0, 1, 15, 2, 15),
-        Block.box(3, 2, 3, 13, 4, 13),
-        Block.box(5, 4, 5, 11, 9, 11),
-        Block.box(0, 9, 0, 16, 12, 16)
+        Block.box(2, 0, 2, 14, 2, 14),
+        Block.box(0, 2, 0, 16, 4, 16),
+        Block.box(0, 4, 0, 16, 16, 2),
+        Block.box(0, 4, 14, 16, 16, 16),
+        Block.box(0, 4, 2, 2, 16, 14),
+        Block.box(14, 4, 2, 16, 16, 14)
     );
 
     @Override
