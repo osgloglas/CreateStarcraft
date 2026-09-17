@@ -7,6 +7,7 @@ import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.block.ModBlocks;
 import com.souls.starcraft.client.StarlightManaHud;
 import com.souls.starcraft.event.StarlightManaEvents;
+import com.souls.starcraft.fluid.ModFluids;
 import com.souls.starcraft.item.ModCreativeModeTabs;
 import com.souls.starcraft.item.ModItems;
 import com.souls.starcraft.mana.StarlightManaHandler;
@@ -49,6 +50,9 @@ public class StarCraft {
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+
+        ModFluids.FLUID_TYPES.register(modEventBus);
+        ModFluids.FLUIDS.register(modEventBus);
 
         ModDataAttachments.register(modEventBus);
 

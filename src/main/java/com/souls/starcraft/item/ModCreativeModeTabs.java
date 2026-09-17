@@ -21,6 +21,7 @@ public class ModCreativeModeTabs {
         .displayItems((itemDisplayParameters, output) -> {
             output.accept(ModItems.AQUAMARINE);
             output.accept(ModItems.STAR_WAND);
+            output.accept(ModItems.LIQUID_STARLIGHT_BUCKET);
 
             output.accept(ModBlocks.AQUAMARINE_SAND);
             output.accept(ModBlocks.MARBLE_BLOCK);
