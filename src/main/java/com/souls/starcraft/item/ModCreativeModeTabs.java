@@ -24,6 +24,9 @@ public class ModCreativeModeTabs {
 
             output.accept(ModBlocks.AQUAMARINE_SAND);
             output.accept(ModBlocks.MARBLE_BLOCK);
+            output.accept(ModBlocks.MARBLE_STAIRS);
+            output.accept(ModBlocks.MARBLE_SLAB);
+            output.accept(ModBlocks.MARBLE_WALL);
 
             output.accept(ModBlocks.STARLIGHT_CRAFTER);
             output.accept(ModBlocks.STARLIGHT_BASIN);

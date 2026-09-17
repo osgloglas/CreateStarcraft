@@ -2,6 +2,9 @@
     "replace": false,
     "values": [
         "starcraft:marble_block",
+        "starcraft:marble_slab",
+        "starcraft:marble_stairs",
+        "starcraft:marble_wall",
         "starcraft:starlight_crafter",
         "starcraft:starlight_basin"
     ]

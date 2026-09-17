@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "type=bottom": {
+            "model": "starcraft:block/marble_slab"
+        },
+        "type=top": {
+            "model": "starcraft:block/marble_slab_top"
+        },
+        "type=double": {
+            "model": "starcraft:block/marble_block"
+        }
+    }
+}
