@@ -12,5 +12,7 @@
   "block.starcraft.starlight_crafter": "Starlight Crafter",
   "block.starcraft.starlight_basin": "Starlight Basin",
 
+  "fluid_type.starcraft.liquid_starlight": "Liquid Starlight",
+
   "creativetab.starcraft.starcraft_tab": "Starcraft"
 }

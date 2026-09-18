@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.souls.starcraft.attachment.ModDataAttachments;
+import com.souls.starcraft.block.ModBlockEntities;
 import com.souls.starcraft.block.ModBlocks;
 import com.souls.starcraft.client.StarlightManaHud;
 import com.souls.starcraft.event.StarlightManaEvents;
@@ -19,6 +20,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -50,6 +53,7 @@ public class StarCraft {
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
         ModFluids.FLUID_TYPES.register(modEventBus);
         ModFluids.FLUIDS.register(modEventBus);
@@ -65,6 +69,9 @@ public class StarCraft {
         //starlight mana
         modEventBus.addListener(StarlightManaHud::registerGuiLayers);
         modEventBus.addListener(ModNetworking::register);
+
+        //create fluid
+        modEventBus.addListener(this::registerCapabilities);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -82,6 +89,12 @@ public class StarCraft {
             event.accept(ModBlocks.AQUAMARINE_SAND);
             event.accept(ModBlocks.MARBLE_BLOCK);
         }*/
+    }
+
+    //create capabilities
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.STARLIGHT_BASIN.get(),
+            (basin, side) -> basin.getOutputHandler());
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

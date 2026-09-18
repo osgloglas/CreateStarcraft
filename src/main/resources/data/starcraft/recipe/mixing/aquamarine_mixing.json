@@ -1,0 +1,19 @@
+{
+    "type": "create:mixing",
+    "ingredients": [
+        {
+            "item": "minecraft:iron_nugget"
+        },
+        {
+            "type": "neoforge:single",
+            "amount": 500,
+            "fluid": "starcraft:liquid_starlight"
+        }
+    ],
+    "results": [
+        {
+            "id": "starcraft:aquamarine",
+            "count": 1
+        }
+    ]
+}
