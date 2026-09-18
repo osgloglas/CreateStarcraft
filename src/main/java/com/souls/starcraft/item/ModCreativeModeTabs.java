@@ -22,6 +22,7 @@ public class ModCreativeModeTabs {
             output.accept(ModItems.AQUAMARINE);
             output.accept(ModItems.STAR_WAND);
             output.accept(ModItems.LIQUID_STARLIGHT_BUCKET);
+            output.accept(ModItems.STARMETAL);
 
             output.accept(ModBlocks.AQUAMARINE_SAND);
             output.accept(ModBlocks.MARBLE_BLOCK);

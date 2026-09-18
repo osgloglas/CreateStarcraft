@@ -11,6 +11,7 @@ import com.souls.starcraft.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -40,7 +41,7 @@ public class ModBlocks {
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
 
     public static final DeferredBlock<LiquidBlock> LIQUID_STARLIGHT_BLOCK = registerBlock("liquid_starlight", () -> new LiquidBlock(ModFluids.LIQUID_STARLIGHT.get(),
-        BlockBehaviour.Properties.of().noCollission().strength(100.0F).noLootTable().lightLevel(state -> 8)));
+        BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel(state -> 8)));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);
