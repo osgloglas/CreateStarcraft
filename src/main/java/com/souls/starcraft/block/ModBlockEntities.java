@@ -2,6 +2,7 @@ package com.souls.starcraft.block;
 
 import com.souls.starcraft.StarCraft;
 import com.souls.starcraft.block.custom.entity.CelestialGatewayBlockEntity;
+import com.souls.starcraft.block.custom.entity.CrystalLensBlockEntity;
 import com.souls.starcraft.block.custom.entity.StarlightBasinBlockEntity;
 
 import net.minecraft.core.registries.Registries;
@@ -17,4 +18,7 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CelestialGatewayBlockEntity>> CELESTIAL_GATEWAY = BLOCK_ENTITIES.register(
         "celestial_gateway", () -> BlockEntityType.Builder.of(CelestialGatewayBlockEntity::new, ModBlocks.CELESTIAL_GATEWAY.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrystalLensBlockEntity>> CRYSTAL_LENS = BLOCK_ENTITIES.register(
+        "crystal_lens", () -> BlockEntityType.Builder.of(CrystalLensBlockEntity::new, ModBlocks.CRYSTAL_LENS.get()).build(null));
 }

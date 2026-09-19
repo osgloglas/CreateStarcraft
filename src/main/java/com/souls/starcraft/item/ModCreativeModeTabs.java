@@ -33,6 +33,8 @@ public class ModCreativeModeTabs {
             output.accept(ModBlocks.STARLIGHT_CRAFTER);
             output.accept(ModBlocks.STARLIGHT_BASIN);
             output.accept(ModBlocks.CELESTIAL_GATEWAY);
+            output.accept(ModBlocks.CRYSTAL_LENS);
+            output.accept(ModBlocks.LENS_FRAME);
         }).build());
 
     public static void register(IEventBus eventBus) {

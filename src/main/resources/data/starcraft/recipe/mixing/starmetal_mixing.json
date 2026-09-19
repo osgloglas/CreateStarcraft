@@ -1,0 +1,19 @@
+{
+    "type": "create:mixing",
+    "ingredients": [
+        {
+            "item": "minecraft:iron_ingot"
+        },
+        {
+            "type": "neoforge:single",
+            "amount": 1000,
+            "fluid": "starcraft:liquid_starlight"
+        }
+    ],
+    "results": [
+        {
+            "id": "starcraft:starmetal",
+            "count": 1
+        }
+    ]
+}

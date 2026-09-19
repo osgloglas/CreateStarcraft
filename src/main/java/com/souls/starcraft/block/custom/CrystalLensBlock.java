@@ -4,7 +4,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.serialization.MapCodec;
 import com.souls.starcraft.block.ModBlockEntities;
-import com.souls.starcraft.block.custom.entity.CelestialGatewayBlockEntity;
+import com.souls.starcraft.block.custom.entity.CrystalLensBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -19,25 +20,18 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CelestialGatewayBlock extends BaseEntityBlock {
-    public static final MapCodec<CelestialGatewayBlock> CODEC = simpleCodec(CelestialGatewayBlock::new);
+public class CrystalLensBlock extends BaseEntityBlock {
+    public static final MapCodec<CrystalLensBlock> CODEC = simpleCodec(CrystalLensBlock::new);
 
-    public CelestialGatewayBlock(Properties properties) {
+    public CrystalLensBlock(Properties properties) {
         super(properties);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override 
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CelestialGatewayBlockEntity(pos, state);
-    }
-
     private static final VoxelShape SHAPE = Shapes.or(
-        Block.box(0, 0, 0, 16, 2, 16)
+        Block.box(0, 0, 0, 2, 16, 2),
+        Block.box(14, 0, 0, 16, 16, 2),
+        Block.box(14, 0, 14, 16, 16, 16),
+        Block.box(0, 0, 14, 2, 16, 16)
     );
 
     @Override
@@ -56,12 +50,17 @@ public class CelestialGatewayBlock extends BaseEntityBlock {
     }
 
     @Override 
-    @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        if (level.isClientSide) {
-            return null;
-        }
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
 
-        return createTickerHelper(type, ModBlockEntities.CELESTIAL_GATEWAY.get(), CelestialGatewayBlockEntity::serverTick);
+    @Override 
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CrystalLensBlockEntity(pos, state);
+    }
+
+    @Override 
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.CRYSTAL_LENS.get(), CrystalLensBlockEntity::serverTick);
     }
 }

@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 
 import com.souls.starcraft.StarCraft;
 import com.souls.starcraft.block.custom.CelestialGatewayBlock;
+import com.souls.starcraft.block.custom.CrystalLensBlock;
+import com.souls.starcraft.block.custom.LensFrameBlock;
 import com.souls.starcraft.block.custom.StarlightBasinBlock;
 import com.souls.starcraft.block.custom.StarlightCrafterBlock;
 import com.souls.starcraft.fluid.ModFluids;
@@ -41,7 +43,12 @@ public class ModBlocks {
     public static final DeferredBlock<Block> MARBLE_WALL = registerBlock("marble_wall", () -> new WallBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
     public static final DeferredBlock<Block> CELESTIAL_GATEWAY = registerBlock("celestial_gateway", () -> new CelestialGatewayBlock(BlockBehaviour.Properties.of()
-        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
+        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE).noOcclusion()));
+
+    public static final DeferredBlock<Block> CRYSTAL_LENS = registerBlock("crystal_lens", () -> new CrystalLensBlock(BlockBehaviour.Properties.of()
+        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.GLASS).noOcclusion()));
+    public static final DeferredBlock<Block> LENS_FRAME = registerBlock("lens_frame", () -> new LensFrameBlock(BlockBehaviour.Properties.of()
+        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.WOOD).noOcclusion()));
 
     public static final DeferredBlock<LiquidBlock> LIQUID_STARLIGHT_BLOCK = registerBlock("liquid_starlight", () -> new LiquidBlock(ModFluids.LIQUID_STARLIGHT.get(),
         BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel(state -> 8)));
