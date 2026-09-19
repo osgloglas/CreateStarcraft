@@ -23,4 +23,8 @@ public class CelestialGatewayRegistry {
     public record GatewayEntry (UUID id, BlockPos pos, ResourceKey<Level> dimension) {
         
     }
+
+    public static GatewayEntry getGateway(UUID id) {
+        return GATEWAYS.get(id);
+    }
 }

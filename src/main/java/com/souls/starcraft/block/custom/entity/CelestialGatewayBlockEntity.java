@@ -56,6 +56,13 @@ public class CelestialGatewayBlockEntity extends BlockEntity {
                             continue;
                         }
 
+                        //only gateways within 500 blocks
+                        double distance = Math.sqrt(pos.distSqr(entry.pos()));
+
+                        if (distance > 500.0) {
+                            continue;
+                        }
+
                         PacketDistributor.sendToPlayer(player, new GatewayDestinationPayload(entry.id(), entry.pos(), pos));
                     }
                 }

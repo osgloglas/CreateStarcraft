@@ -1,5 +1,6 @@
 package com.souls.starcraft.block.custom.entity.renderer;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -189,52 +190,49 @@ public class CelestialGatewayRenderer {
     }
 
     private static void renderGatewayStar(PoseStack poseStack, MultiBufferSource.BufferSource buffers) {
-        UUID gatewayId = CelestialGatewayClient.getDestinationGatewayId();
-
-        if (gatewayId == null) {
-            return;
-        }
-
         VertexConsumer consumer = buffers.getBuffer(RenderType.debugQuads());
 
         Matrix4f matrix = poseStack.last().pose();
 
         //actual star
         BlockPos sourcePos = CelestialGatewayClient.getSourceGatewayPos();
-        BlockPos destinationPos = CelestialGatewayClient.getDestinationGatewayPos();
 
-        if (sourcePos == null || destinationPos == null) {
+        if (sourcePos == null) {
             return;
         }
 
-        float dx = destinationPos.getX() - sourcePos.getX();
-        float dy = destinationPos.getY() - sourcePos.getY();
-        float dz = destinationPos.getZ() - sourcePos.getZ();
+        for (Map.Entry<UUID, BlockPos> entry : CelestialGatewayClient.getDestinationGateways().entrySet()) {
+            BlockPos destinationPos = entry.getValue();
 
-        Vector3f center = new Vector3f(dx, dy, dz);
+            float dx = destinationPos.getX() - sourcePos.getX();
+            float dy = destinationPos.getY() - sourcePos.getY();
+            float dz = destinationPos.getZ() - sourcePos.getZ();
 
-        if (center.lengthSquared() == 0.0F) {
-            return;
+            Vector3f center = new Vector3f(dx, dy, dz);
+
+            if (center.lengthSquared() == 0.0F) {
+                continue;
+            }
+
+            center.normalize().mul(0.47F);
+
+            float size = entry.getKey().equals(CelestialGatewayClient.getTargetedGatewayId()) ? 0.014F : 0.009F;
+
+            Vector3f normal = new Vector3f(center).normalize();
+            Vector3f reference = Math.abs(normal.y) < 0.9F ? new Vector3f(0, 1, 0) : new Vector3f(1, 0, 0);
+            Vector3f right = new Vector3f(reference).cross(normal).normalize().mul(size);
+            Vector3f up = new Vector3f(normal).cross(right).normalize().mul(size);
+
+            Vector3f p1 = new Vector3f(center).sub(right).sub(up);
+            Vector3f p2 = new Vector3f(center).add(right).sub(up);
+            Vector3f p3 = new Vector3f(center).add(right).add(up);
+            Vector3f p4 = new Vector3f(center).sub(right).add(up);
+
+            consumer.addVertex(matrix, p1.x, p1.y, p1.z).setColor(180, 120, 255, 255);
+            consumer.addVertex(matrix, p2.x, p2.y, p2.z).setColor(180, 120, 255, 255);
+            consumer.addVertex(matrix, p3.x, p3.y, p3.z).setColor(180, 120, 255, 255);
+            consumer.addVertex(matrix, p4.x, p4.y, p4.z).setColor(180, 120, 255, 255);
         }
-
-        center.normalize().mul(0.47F);
-
-        float size = 0.009F;
-
-        Vector3f normal = new Vector3f(center).normalize();
-        Vector3f reference = Math.abs(normal.y) < 0.9F ? new Vector3f(0, 1, 0) : new Vector3f(1, 0, 0);
-        Vector3f right = new Vector3f(reference).cross(normal).normalize().mul(size);
-        Vector3f up = new Vector3f(normal).cross(right).normalize().mul(size);
-
-        Vector3f p1 = new Vector3f(center).sub(right).sub(up);
-        Vector3f p2 = new Vector3f(center).add(right).sub(up);
-        Vector3f p3 = new Vector3f(center).add(right).add(up);
-        Vector3f p4 = new Vector3f(center).sub(right).add(up);
-
-        consumer.addVertex(matrix, p1.x, p1.y, p1.z).setColor(180, 120, 255, 255);
-        consumer.addVertex(matrix, p2.x, p2.y, p2.z).setColor(180, 120, 255, 255);
-        consumer.addVertex(matrix, p3.x, p3.y, p3.z).setColor(180, 120, 255, 255);
-        consumer.addVertex(matrix, p4.x, p4.y, p4.z).setColor(180, 120, 255, 255);
 
         buffers.endBatch(RenderType.debugQuads());
     }
