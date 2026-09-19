@@ -6,6 +6,7 @@ import com.mojang.logging.LogUtils;
 import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.block.ModBlockEntities;
 import com.souls.starcraft.block.ModBlocks;
+import com.souls.starcraft.block.custom.entity.renderer.CelestialGatewayRenderer;
 import com.souls.starcraft.client.StarlightManaHud;
 import com.souls.starcraft.event.StarlightManaEvents;
 import com.souls.starcraft.fluid.ModFluids;

@@ -3,6 +3,7 @@ package com.souls.starcraft.block;
 import java.util.function.Supplier;
 
 import com.souls.starcraft.StarCraft;
+import com.souls.starcraft.block.custom.CelestialGatewayBlock;
 import com.souls.starcraft.block.custom.StarlightBasinBlock;
 import com.souls.starcraft.block.custom.StarlightCrafterBlock;
 import com.souls.starcraft.fluid.ModFluids;
@@ -38,6 +39,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> MARBLE_SLAB = registerBlock("marble_slab", () -> new SlabBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
     public static final DeferredBlock<Block> MARBLE_WALL = registerBlock("marble_wall", () -> new WallBlock(BlockBehaviour.Properties.of()
+        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> CELESTIAL_GATEWAY = registerBlock("celestial_gateway", () -> new CelestialGatewayBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
 
     public static final DeferredBlock<LiquidBlock> LIQUID_STARLIGHT_BLOCK = registerBlock("liquid_starlight", () -> new LiquidBlock(ModFluids.LIQUID_STARLIGHT.get(),

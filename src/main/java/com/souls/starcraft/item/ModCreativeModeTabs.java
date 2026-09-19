@@ -32,6 +32,7 @@ public class ModCreativeModeTabs {
 
             output.accept(ModBlocks.STARLIGHT_CRAFTER);
             output.accept(ModBlocks.STARLIGHT_BASIN);
+            output.accept(ModBlocks.CELESTIAL_GATEWAY);
         }).build());
 
     public static void register(IEventBus eventBus) {
