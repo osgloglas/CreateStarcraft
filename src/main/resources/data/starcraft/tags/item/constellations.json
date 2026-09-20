@@ -1,0 +1,24 @@
+{
+    "replace": false,
+    "values": [
+        "starcraft:libellula_lens",
+        "starcraft:cervus_lens",
+        "starcraft:lucernarius_lens",
+        "starcraft:balaena_stellaris_lens",
+        "starcraft:lunae_geminae_lens",
+        "starcraft:corona_crystallina_lens",
+        "starcraft:vulpes_lens",
+        "starcraft:magna_ferrivia_lens",
+        "starcraft:papilio_lens",
+        "starcraft:gladius_fractus_lens",
+        "starcraft:arcus_stellaris_lens",
+        "starcraft:porta_astralis_lens",
+        "starcraft:stella_polaris_lens",
+        "starcraft:pegasus_lens",
+        "starcraft:cubus_lens",
+        "starcraft:horologium_lens",
+        "starcraft:spiralis_lens",
+        "starcraft:catena_galactica_lens", 
+        "starcraft:strenuus_fautor_lens"
+    ]
+}

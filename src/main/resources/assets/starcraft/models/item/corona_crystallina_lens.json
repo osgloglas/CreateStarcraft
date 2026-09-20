@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "starcraft:item/starmetal"
+        "layer0": "starcraft:item/corona_crystallina_lens"
     }
 }

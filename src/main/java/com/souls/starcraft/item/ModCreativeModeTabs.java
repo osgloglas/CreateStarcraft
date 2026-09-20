@@ -24,6 +24,27 @@ public class ModCreativeModeTabs {
             output.accept(ModItems.LIQUID_STARLIGHT_BUCKET);
             output.accept(ModItems.STARMETAL);
 
+            output.accept(ModItems.LENS);
+            output.accept(ModItems.LIBELLULA_LENS);
+            output.accept(ModItems.CERVUS_LENS);
+            output.accept(ModItems.LUCERNARIUS_LENS);
+            output.accept(ModItems.BALAENA_STELLARIS_LENS);
+            output.accept(ModItems.LUNAE_GEMINAE_LENS);
+            output.accept(ModItems.CORONA_CRYSTALLINA_LENS);
+            output.accept(ModItems.VULPES_LENS);
+            output.accept(ModItems.MAGNA_FERRIVIA_LENS);
+            output.accept(ModItems.PAPILIO_LENS);
+            output.accept(ModItems.GLADIUS_FRACTUS_LENS);
+            output.accept(ModItems.ARCUS_STELLARIS_LENS);
+            output.accept(ModItems.PORTA_ASTRALIS_LENS);
+            output.accept(ModItems.STELLA_POLARIS_LENS);
+            output.accept(ModItems.PEGASUS_LENS);
+            output.accept(ModItems.CUBUS_LENS);
+            output.accept(ModItems.HOROLOGIUM_LENS);
+            output.accept(ModItems.SPIRALIS_LENS);
+            output.accept(ModItems.CATENA_GALACTICA_LENS);
+            output.accept(ModItems.STRENUUS_FAUTOR_LENS);
+
             output.accept(ModBlocks.AQUAMARINE_SAND);
             output.accept(ModBlocks.MARBLE_BLOCK);
             output.accept(ModBlocks.MARBLE_STAIRS);

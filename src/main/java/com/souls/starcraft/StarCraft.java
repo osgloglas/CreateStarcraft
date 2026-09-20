@@ -61,6 +61,10 @@ public class StarCraft {
 
         ModDataAttachments.register(modEventBus);
 
+        ModDataComponents.DATA_COMPONENTS.register(modEventBus);
+
+        ModMenuTypes.MENUS.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
