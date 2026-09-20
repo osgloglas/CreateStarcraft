@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.souls.starcraft.StarCraft;
 import com.souls.starcraft.block.custom.CelestialGatewayBlock;
 import com.souls.starcraft.block.custom.CrystalLensBlock;
+import com.souls.starcraft.block.custom.GrowableCrystalBlock;
 import com.souls.starcraft.block.custom.LensFrameBlock;
 import com.souls.starcraft.block.custom.StarlightBasinBlock;
 import com.souls.starcraft.block.custom.StarlightCrafterBlock;
@@ -49,6 +50,9 @@ public class ModBlocks {
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.GLASS).noOcclusion()));
     public static final DeferredBlock<Block> LENS_FRAME = registerBlock("lens_frame", () -> new LensFrameBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.WOOD).noOcclusion()));
+
+    public static final DeferredBlock<Block> GROWABLE_CRYSTAL = registerBlock("growable_crystal", () -> new GrowableCrystalBlock(BlockBehaviour.Properties.of()
+        .strength(3f).sound(SoundType.STONE).noOcclusion()));
 
     public static final DeferredBlock<LiquidBlock> LIQUID_STARLIGHT_BLOCK = registerBlock("liquid_starlight", () -> new LiquidBlock(ModFluids.LIQUID_STARLIGHT.get(),
         BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel(state -> 8)));

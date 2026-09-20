@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "stage=0": {
+            "model": "starcraft:block/crystal_1"
+        },
+        "stage=1": {
+            "model": "starcraft:block/crystal_2"
+        },
+        "stage=2": {
+            "model": "starcraft:block/crystal_3"
+        }
+    }
+}
