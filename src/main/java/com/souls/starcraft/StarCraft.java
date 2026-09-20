@@ -14,6 +14,7 @@ import com.souls.starcraft.item.ModCreativeModeTabs;
 import com.souls.starcraft.item.ModItems;
 import com.souls.starcraft.mana.StarlightManaHandler;
 import com.souls.starcraft.network.ModNetworking;
+import com.souls.starcraft.spell.ConstellationRegistry;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -80,7 +81,9 @@ public class StarCraft {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        
+        event.enqueueWork(() -> {
+            ConstellationRegistry.bootstrap();
+        });
     }
 
     // Add the example block item to the building blocks tab

@@ -1,10 +1,15 @@
 package com.souls.starcraft.item.custom;
 
+import java.util.List;
+
 import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.entity.projectile.StarlightBoltProjectile;
 import com.souls.starcraft.mana.StarlightMana;
 import com.souls.starcraft.menu.StarWandMenu;
 import com.souls.starcraft.network.StarlightManaPayload;
+import com.souls.starcraft.spell.ConstellationType;
+import com.souls.starcraft.spell.SpellInterpreter;
+import com.souls.starcraft.spell.SpellReader;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,6 +47,14 @@ public class StarWandItem extends Item {
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
         }
 
+        List<ConstellationType> components = SpellReader.readSpell(stack, 0);
+
+        SpellInterpreter.SpellResult spell = SpellInterpreter.interpret(components);
+
+        if (!spell.projectile()) {
+            return InteractionResultHolder.pass(stack);
+        }
+
         if (!level.isClientSide()) {
             StarlightMana mana = player.getData(ModDataAttachments.STARLIGHT_MANA);
 
@@ -51,6 +64,8 @@ public class StarWandItem extends Item {
                 //launch projectile
                 StarlightBoltProjectile projectile = new StarlightBoltProjectile(level, player);
 
+                projectile.setSpellDamage(spell.damage());
+                projectile.setSpellRange(spell.range());
                 projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.0F, 0.0F);
                 level.addFreshEntity(projectile);
 

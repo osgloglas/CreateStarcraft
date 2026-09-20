@@ -6,6 +6,8 @@ import java.util.List;
 import com.souls.starcraft.ModDataComponents;
 import com.souls.starcraft.ModMenuTypes;
 import com.souls.starcraft.ModTags;
+import com.souls.starcraft.spell.ConstellationRegistry;
+import com.souls.starcraft.spell.ConstellationType;
 import com.souls.starcraft.spell.StarWandSpells;
 
 import net.minecraft.core.component.DataComponents;
