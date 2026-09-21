@@ -4,11 +4,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.souls.starcraft.StarCraft;
 import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.mana.StarlightMana;
+import com.souls.starcraft.spell.SpellCastingItem;
+import com.souls.starcraft.spell.SpellReader;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
@@ -43,6 +46,20 @@ public class StarlightManaHud {
         float mana = starlightMana.getMana();
         float maxMana = starlightMana.getMaxMana();
 
+        ItemStack heldStack = minecraft.player.getMainHandItem();
+
+        String spellText = "";
+
+        if (heldStack.getItem() instanceof SpellCastingItem spellItem) {
+            int selectedSpell = spellItem.getSelectedSpell(heldStack);
+            int spellCount = spellItem.getSpellCount(heldStack);
+            int manaCost = SpellReader.getManaCost(heldStack, selectedSpell);
+
+            spellText = "Spell " + (selectedSpell + 1) + "/" + spellCount + " - " + manaCost + " Mana";
+        }
+
+        String manaText = (int) mana + "/" + (int) maxMana;
+
         float percentage = maxMana > 0.0F ? mana / maxMana : 0.0F;
         int filledWidth = (int) (BAR_WIDTH * percentage);
 
@@ -58,6 +75,16 @@ public class StarlightManaHud {
 
             guiGraphics.disableScissor();
         }
+
+        if (!spellText.isEmpty()) {
+            int spellTextX = x + (BAR_WIDTH - minecraft.font.width(spellText)) / 2;
+
+            guiGraphics.drawString(minecraft.font, spellText, spellTextX, y - 20, 0xFFFFFF, true);
+        }
+
+        int manaTextX = x + (BAR_WIDTH - minecraft.font.width(manaText)) / 2;
+
+        guiGraphics.drawString(minecraft.font, manaText, manaTextX, y - 10, 0xFFFFFF, true);
 
         RenderSystem.disableBlend();
     }

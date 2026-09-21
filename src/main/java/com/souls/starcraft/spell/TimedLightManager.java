@@ -4,68 +4,53 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.souls.starcraft.ModEffects;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class TimedLightManager {
-    private record LightData(long endTime, BlockPos lightPos) {}
-
-    private static final Map<UUID, LightData> ACTIVE_LIGHTS = new HashMap<>();
-
-    public static void grantLight(ServerPlayer serverPlayer, int durationTicks) {
-        long endTime = serverPlayer.serverLevel().getGameTime() + durationTicks;
-
-        ACTIVE_LIGHTS.put(serverPlayer.getUUID(), new LightData(endTime, null));
-    }
+    private static final Map<UUID, BlockPos> LIGHT_POSITIONS = new HashMap<>();
 
     public static void tick(ServerPlayer serverPlayer) {
-        LightData data = ACTIVE_LIGHTS.get(serverPlayer.getUUID());
+        UUID playerId = serverPlayer.getUUID();
+        BlockPos oldPos = LIGHT_POSITIONS.get(playerId);
 
-        if (data == null) {
-            return;
-        }
+        if (!serverPlayer.hasEffect(ModEffects.LIGHT_SOURCE)) {
+            if (oldPos != null) {
+                removeOurLight(serverPlayer, oldPos);
+                LIGHT_POSITIONS.remove(playerId);
+            }
 
-        var level = serverPlayer.serverLevel();
-
-        //time up!
-        if (level.getGameTime() >= data.endTime()) {
-            removeOurLight(serverPlayer, data.lightPos());
-            ACTIVE_LIGHTS.remove(serverPlayer.getUUID());
             return;
         }
 
         BlockPos newPos = serverPlayer.blockPosition().above();
 
         //havent moved to new block
-        if (newPos.equals(data.lightPos())) {
+        if (newPos.equals(oldPos)) {
             return;
         }
 
         //remove previous light
-        removeOurLight(serverPlayer, data.lightPos());
+        if (oldPos != null) {
+            removeOurLight(serverPlayer, oldPos);
+        }
 
         //put light into air
-        if (level.getBlockState(newPos).isAir()) {
-            level.setBlockAndUpdate(newPos, Blocks.LIGHT.defaultBlockState());
+        if (serverPlayer.level().getBlockState(newPos).isAir()) {
+            serverPlayer.level().setBlock(newPos, Blocks.LIGHT.defaultBlockState(), 3);
 
-            ACTIVE_LIGHTS.put(serverPlayer.getUUID(), new LightData(data.endTime(), newPos));
+            LIGHT_POSITIONS.put(playerId, newPos);
         } else {
-            ACTIVE_LIGHTS.put(serverPlayer.getUUID(), new LightData(data.endTime(), null));
+            LIGHT_POSITIONS.remove(playerId);
         }
     }
 
     private static void removeOurLight(ServerPlayer serverPlayer, BlockPos pos) {
-        if (pos == null) {
-            return;
-        }
-
-        var level = serverPlayer.serverLevel();
-        BlockState state = level.getBlockState(pos);
-
-        if (state.is(Blocks.LIGHT)) {
-            level.removeBlock(pos, false);
+        if (serverPlayer.level().getBlockState(pos).is(Blocks.LIGHT)) {
+            serverPlayer.level().removeBlock(pos, false);
         }
     }
 }

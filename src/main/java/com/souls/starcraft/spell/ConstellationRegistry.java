@@ -29,10 +29,15 @@ public class ConstellationRegistry {
         register(ModItems.CORONA_CRYSTALLINA_LENS.get(), ConstellationType.AOE);
         register(ModItems.VULPES_LENS.get(), ConstellationType.INVISIBILITY);
         register(ModItems.MAGNA_FERRIVIA_LENS.get(), ConstellationType.PROJECTILE);
+        register(ModItems.PAPILIO_LENS.get(), ConstellationType.SLOWFALL);
         register(ModItems.GLADIUS_FRACTUS_LENS.get(), ConstellationType.STRENGTH);
         register(ModItems.PORTA_ASTRALIS_LENS.get(), ConstellationType.TELEPORTATION);
         register(ModItems.STELLA_POLARIS_LENS.get(), ConstellationType.BOMBS);
         register(ModItems.PEGASUS_LENS.get(), ConstellationType.ABSORPTION);
         register(ModItems.CUBUS_LENS.get(), ConstellationType.REACH);
+        register(ModItems.HOROLOGIUM_LENS.get(), ConstellationType.TICK_SPEED);
+        register(ModItems.SPIRALIS_LENS.get(), ConstellationType.DURATION);
+        register(ModItems.CATENA_GALACTICA_LENS.get(), ConstellationType.LIFESTEAL);
+        register(ModItems.STRENUUS_FAUTOR_LENS.get(), ConstellationType.HEAL);
     }
 }

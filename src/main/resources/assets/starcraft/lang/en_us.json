@@ -39,5 +39,15 @@
 
   "fluid_type.starcraft.liquid_starlight": "Liquid Starlight",
 
-  "creativetab.starcraft.starcraft_tab": "Starcraft"
+  "effect.starcraft.flight": "Flight",
+  "effect.starcraft.light_source": "Lantern",
+  "effect.starcraft.max_health": "Max Health",
+  "effect.starcraft.building_reach": "Reach",
+  "effect.starcraft.time_acceleration": "Time Acceleration",
+
+  "creativetab.starcraft.starcraft_tab": "Starcraft",
+
+  "key.categories.starcraft": "Starcraft",
+  "key.starcraft.previous_spell": "Previous Spell",
+  "key.starcraft.next_spell": "Next Spell"
 }

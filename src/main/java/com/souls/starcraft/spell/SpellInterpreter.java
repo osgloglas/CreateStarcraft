@@ -18,6 +18,9 @@ public class SpellInterpreter {
         int strengthLevel = 0;
         int absorptionLevel = 0;
         int reachLevel = 0;
+        int tickSpeedLevel = 0;
+        int healLevel = 0;
+        int slowfallLevel = 0;
 
         for (ConstellationType component : components) {
             operations.add(new SpellOperation(component));
@@ -32,16 +35,20 @@ public class SpellInterpreter {
                 case DAMAGE -> damage += 1.0;
                 case INVISIBILITY -> invisibility = true;
                 case PROJECTILE -> projectile = true;
+                case SLOWFALL -> slowfallLevel++;
                 case STRENGTH -> strengthLevel++;
                 case TELEPORTATION -> {}
                 case BOMBS -> {}
                 case ABSORPTION -> absorptionLevel++;
                 case REACH -> reachLevel++;
+                case TICK_SPEED -> tickSpeedLevel++;
+                case DURATION -> durationTicks += 20 * 30;
+                case HEAL -> healLevel++;
             }
         }
 
-        return new SpellResult(flight, speedLevel, lightSource, maxHealthLevels, range, damage, invisibility, projectile, durationTicks, 
-            operations, strengthLevel, absorptionLevel, reachLevel);
+        return new SpellResult(flight, speedLevel, lightSource, maxHealthLevels, range, damage, invisibility, projectile, slowfallLevel, 
+            durationTicks, operations, strengthLevel, absorptionLevel, reachLevel, tickSpeedLevel, healLevel);
     }
 
     public record SpellResult(
@@ -53,11 +60,14 @@ public class SpellInterpreter {
         double damage,
         boolean invisibility,
         boolean projectile,
+        int slowfallLevel,
         int durationTicks,
         List<SpellOperation> operations,
         int strengthLevel,
         int absorptionLevel,
-        int reachLevel
+        int reachLevel,
+        int tickSpeedLevel,
+        int healLevel
     ) {}
 
     public static int getProjectileAoeLevel(List<SpellOperation> operations) {
@@ -111,5 +121,23 @@ public class SpellInterpreter {
         }
 
         return bombs;
+    }
+
+    public static int getProjectileLifestealLevel(List<SpellOperation> operations) {
+        boolean foundProjectile = false;
+        int lifeStealLevel = 0;
+
+        for (SpellOperation operation : operations) {
+            if (operation.type() == ConstellationType.PROJECTILE) {
+                foundProjectile = true;
+                continue;
+            }
+
+            if (foundProjectile && operation.type() == ConstellationType.LIFESTEAL) {
+                lifeStealLevel++;
+            }
+        }
+
+        return lifeStealLevel;
     }
 }

@@ -2,20 +2,17 @@ package com.souls.starcraft.item.custom;
 
 import java.util.List;
 
+import com.souls.starcraft.ModEffects;
 import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.entity.projectile.StarlightBoltProjectile;
 import com.souls.starcraft.mana.StarlightMana;
 import com.souls.starcraft.menu.StarWandMenu;
 import com.souls.starcraft.network.StarlightManaPayload;
 import com.souls.starcraft.spell.ConstellationType;
+import com.souls.starcraft.spell.SpellCastingItem;
 import com.souls.starcraft.spell.SpellInterpreter;
 import com.souls.starcraft.spell.SpellReader;
 import com.souls.starcraft.spell.TeleportSpellHandler;
-import com.souls.starcraft.spell.TimedFlightManager;
-import com.souls.starcraft.spell.TimedLightManager;
-import com.souls.starcraft.spell.TimedMaxHealthManager;
-import com.souls.starcraft.spell.TimedReachManager;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -30,9 +27,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class StarWandItem extends Item {
+public class StarWandItem extends Item implements SpellCastingItem {
     public StarWandItem(Properties properties) {
         super(properties);
+    }
+
+    @Override 
+    public int getSpellCount(ItemStack stack) {
+        return 3;
     }
 
     @Override
@@ -55,7 +57,9 @@ public class StarWandItem extends Item {
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
         }
 
-        List<ConstellationType> components = SpellReader.readSpell(stack, 0);
+        int selectedSpell = getSelectedSpell(stack);
+
+        List<ConstellationType> components = SpellReader.readSpell(stack, selectedSpell);
 
         SpellInterpreter.SpellResult spell = SpellInterpreter.interpret(components);
 
@@ -69,7 +73,8 @@ public class StarWandItem extends Item {
 
         //big spell checker
         boolean canCast = spell.projectile() || spell.flight() || spell.speedLevel() > 0 || spell.lightSource() || spell.maxHealthLevels() > 0
-            || spell.invisibility() || spell.strengthLevel() > 0 || teleportDestination != null || spell.absorptionLevel() > 0 || spell.reachLevel() > 0;
+            || spell.invisibility() || spell.slowfallLevel() > 0 || spell.strengthLevel() > 0 || teleportDestination != null || spell.absorptionLevel() > 0 
+            || spell.reachLevel() > 0 || spell.tickSpeedLevel() > 0 || spell.healLevel() > 0;
 
         if (!canCast) {
             return InteractionResultHolder.pass(stack);
@@ -78,7 +83,7 @@ public class StarWandItem extends Item {
         if (!level.isClientSide()) {
             StarlightMana mana = player.getData(ModDataAttachments.STARLIGHT_MANA);
 
-            int manaCost = SpellReader.getManaCost(stack, 0);
+            int manaCost = SpellReader.getManaCost(stack, selectedSpell);
 
             if (mana.consumeMana(manaCost)) {
                 System.out.println("STAR WAND! Mana remaining: " + mana.getMana());
@@ -86,7 +91,7 @@ public class StarWandItem extends Item {
                 if (player instanceof ServerPlayer serverPlayer) {
                     //flight
                     if (spell.flight()) {
-                        TimedFlightManager.grantFlight(serverPlayer, spell.durationTicks());
+                        serverPlayer.addEffect(new MobEffectInstance(ModEffects.FLIGHT, spell.durationTicks(), 0));
                     }
 
                     //speed
@@ -96,12 +101,12 @@ public class StarWandItem extends Item {
 
                     //light
                     if (spell.lightSource()) {
-                        TimedLightManager.grantLight(serverPlayer, spell.durationTicks());
+                        serverPlayer.addEffect(new MobEffectInstance(ModEffects.LIGHT_SOURCE, spell.durationTicks(), 0));
                     }
 
                     //max health
                     if (spell.maxHealthLevels() > 0) {
-                        TimedMaxHealthManager.grantMaxHealth(serverPlayer, spell.maxHealthLevels(), spell.durationTicks());
+                        serverPlayer.addEffect(new MobEffectInstance(ModEffects.MAX_HEALTH, spell.durationTicks(), spell.maxHealthLevels() - 1));
                     }
 
                     //invisibility
@@ -112,6 +117,7 @@ public class StarWandItem extends Item {
                     //projectile
                     int aoeLevel = SpellInterpreter.getProjectileAoeLevel(spell.operations());
                     int bombCount = SpellInterpreter.getProjectileBombCount(spell.operations());
+                    int lifeStealLevel = SpellInterpreter.getProjectileLifestealLevel(spell.operations());
 
                     if (spell.projectile()) {
                         StarlightBoltProjectile projectile = new StarlightBoltProjectile(level, player);
@@ -121,9 +127,15 @@ public class StarWandItem extends Item {
                         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.0F, 0.0F);
                         projectile.setAoeRadius(aoeLevel);
                         projectile.setBombCount(bombCount);
+                        projectile.setLifeStealLevel(lifeStealLevel);
                         level.addFreshEntity(projectile);
 
                         PacketDistributor.sendToPlayer(serverPlayer, new StarlightManaPayload(mana.getMana(), mana.getMaxMana()));
+                    }
+
+                    //slowfall
+                    if (spell.slowfallLevel() > 0) {
+                        serverPlayer.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, spell.durationTicks(), spell.slowfallLevel() - 1));
                     }
 
                     //strength
@@ -143,7 +155,17 @@ public class StarWandItem extends Item {
 
                     //reach
                     if (spell.reachLevel() > 0) {
-                        TimedReachManager.grantReach(serverPlayer, spell.reachLevel(), spell.durationTicks());
+                        serverPlayer.addEffect(new MobEffectInstance(ModEffects.BUILDING_REACH, spell.durationTicks(), spell.reachLevel() - 1));
+                    }
+
+                    //tick speed
+                    if (spell.tickSpeedLevel() > 0) {
+                        serverPlayer.addEffect(new MobEffectInstance(ModEffects.TIME_ACCELERATION, spell.durationTicks(), spell.tickSpeedLevel() - 1));
+                    }
+
+                    //heal
+                    if (spell.healLevel() > 0) {
+                        serverPlayer.heal(spell.healLevel() * 2.0F);
                     }
                 }
             }

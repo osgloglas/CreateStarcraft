@@ -1,5 +1,6 @@
 package com.souls.starcraft.item;
 
+import com.souls.starcraft.ModDataComponents;
 import com.souls.starcraft.StarCraft;
 import com.souls.starcraft.fluid.ModFluids;
 import com.souls.starcraft.item.custom.StarWandItem;
@@ -15,7 +16,8 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(StarCraft.MODID);
 
     public static final DeferredItem<Item> AQUAMARINE = ITEMS.register("aquamarine", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> STAR_WAND = ITEMS.register("star_wand", () -> new StarWandItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> STAR_WAND = ITEMS.register("star_wand", () -> 
+        new StarWandItem(new Item.Properties().stacksTo(1).component(ModDataComponents.SELECTED_SPELL, 0)));
     public static final DeferredItem<Item> STARMETAL = ITEMS.register("starmetal", () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> LENS = ITEMS.register("lens", () -> new Item(new Item.Properties()));

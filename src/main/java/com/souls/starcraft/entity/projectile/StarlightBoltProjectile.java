@@ -13,6 +13,7 @@ public class StarlightBoltProjectile extends Snowball{
     private int maxLifeTime = 5;
     private float aoeRadius = 0.0F;
     private int bombCount = 0;
+    private int lifeStealLevel = 0;
 
     public StarlightBoltProjectile(Level level, LivingEntity owner) {
         super(level, owner);
@@ -34,6 +35,10 @@ public class StarlightBoltProjectile extends Snowball{
         this.bombCount = bombCount;
     }
 
+    public void setLifeStealLevel(int lifeStealLevel) {
+        this.lifeStealLevel = lifeStealLevel;
+    }
+
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
@@ -42,7 +47,12 @@ public class StarlightBoltProjectile extends Snowball{
             if (result instanceof EntityHitResult entityHit) {
                 Entity target = entityHit.getEntity();
 
-                target.hurt(damageSources().indirectMagic(this, getOwner()), spellDamage);
+                //lifesteal and damage
+                boolean damaged = target.hurt(damageSources().indirectMagic(this, getOwner()), spellDamage);
+
+                if (damaged && lifeStealLevel > 0 && getOwner() instanceof LivingEntity owner) {
+                    owner.heal(lifeStealLevel * 2.0F);
+                }
             }
 
             //aoe
@@ -52,7 +62,12 @@ public class StarlightBoltProjectile extends Snowball{
                 for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area, entity ->
                     entity != getOwner() && (!(result instanceof EntityHitResult hit) || entity != hit.getEntity())
                 )) {
-                    target.hurt(damageSources().indirectMagic(this, getOwner()), spellDamage);
+                    //lifesteal and damage
+                    boolean damaged = target.hurt(damageSources().indirectMagic(this, getOwner()), spellDamage);
+                    
+                    if (damaged && lifeStealLevel > 0 && getOwner() instanceof LivingEntity owner) {
+                        owner.heal(lifeStealLevel * 2.0F);
+                    }
                 }
             }
 

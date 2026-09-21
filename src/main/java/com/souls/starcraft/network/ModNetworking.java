@@ -4,9 +4,11 @@ import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.client.CelestialGatewayClient;
 import com.souls.starcraft.gateway.CelestialGatewayRegistry;
 import com.souls.starcraft.mana.StarlightMana;
+import com.souls.starcraft.spell.SpellCastingItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -43,6 +45,12 @@ public class ModNetworking {
             TeleportToGatewayPayload.TYPE,
             TeleportToGatewayPayload.STREAM_CODEC,
             ModNetworking::handleTeleportToGateway
+        );
+
+        registrar.playToServer(
+            SpellSwitchPayload.TYPE,
+            SpellSwitchPayload.STREAM_CODEC,
+            ModNetworking::handleSpellSwitch
         );
     }
 
@@ -134,6 +142,23 @@ public class ModNetworking {
             BlockPos targetPos = destination.pos();
 
             player.teleportTo(targetPos.getX() + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 0.5);
+        });
+    }
+
+    //spell swapping
+    private static void handleSpellSwitch(final SpellSwitchPayload payload, final IPayloadContext context) {
+        context.enqueueWork(() -> {
+            ItemStack stack = context.player().getMainHandItem();
+
+            if (!(stack.getItem() instanceof SpellCastingItem spellItem)) {
+                return;
+            }
+
+            if (payload.direction() > 0) {
+                spellItem.nextSpell(stack);
+            } else if (payload.direction() < 0) {
+                spellItem.previousSpell(stack);
+            }
         });
     }
 }

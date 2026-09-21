@@ -66,6 +66,8 @@ public class StarCraft {
 
         ModMenuTypes.MENUS.register(modEventBus);
 
+        ModEffects.MOB_EFFECTS.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
