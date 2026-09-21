@@ -20,8 +20,19 @@ public class ConstellationRegistry {
     }
 
     public static void bootstrap() {
+        register(ModItems.LIBELLULA_LENS.get(), ConstellationType.FLIGHT);
+        register(ModItems.CERVUS_LENS.get(), ConstellationType.SPEED);
+        register(ModItems.LUCERNARIUS_LENS.get(), ConstellationType.LIGHT_SOURCE);
+        register(ModItems.BALAENA_STELLARIS_LENS.get(), ConstellationType.MAX_HEALTH);
         register(ModItems.ARCUS_STELLARIS_LENS.get(), ConstellationType.RANGE);
         register(ModItems.LUNAE_GEMINAE_LENS.get(), ConstellationType.DAMAGE);
+        register(ModItems.CORONA_CRYSTALLINA_LENS.get(), ConstellationType.AOE);
+        register(ModItems.VULPES_LENS.get(), ConstellationType.INVISIBILITY);
         register(ModItems.MAGNA_FERRIVIA_LENS.get(), ConstellationType.PROJECTILE);
+        register(ModItems.GLADIUS_FRACTUS_LENS.get(), ConstellationType.STRENGTH);
+        register(ModItems.PORTA_ASTRALIS_LENS.get(), ConstellationType.TELEPORTATION);
+        register(ModItems.STELLA_POLARIS_LENS.get(), ConstellationType.BOMBS);
+        register(ModItems.PEGASUS_LENS.get(), ConstellationType.ABSORPTION);
+        register(ModItems.CUBUS_LENS.get(), ConstellationType.REACH);
     }
 }

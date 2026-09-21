@@ -113,4 +113,23 @@ public class StarWandMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player player, int index) {
         return ItemStack.EMPTY;
     }
+
+    public int getSpellManaCost(int spell) {
+        int cost = 0;
+        int startSlot = spell * 12;
+
+        for (int i = 0; i < 12; i++) {
+            ItemStack stack = spellContainer.getItem(startSlot + i);
+
+            if (!stack.isEmpty()) {
+                ConstellationType type = ConstellationRegistry.get(stack);
+
+                if (type != null) {
+                    cost += type.getManaCost();
+                }
+            }
+        }
+
+        return cost;
+    }
 }

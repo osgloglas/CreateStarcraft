@@ -62,4 +62,8 @@ public class SpellReader {
 
         return components;
     }
+
+    public static int getManaCost(ItemStack wnad, int spell) {
+        return readSpell(wnad, spell).stream().mapToInt(ConstellationType::getManaCost).sum();
+    }
 }

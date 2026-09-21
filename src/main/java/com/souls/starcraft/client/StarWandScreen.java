@@ -39,4 +39,13 @@ public class StarWandScreen extends AbstractContainerScreen<StarWandMenu> {
 
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
+
+    @Override 
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
+
+        guiGraphics.drawString(this.font, "Sp1: " + menu.getSpellManaCost(0) + " mana", 60, 6, 0x404040, false);
+        guiGraphics.drawString(this.font, "Sp2: " + menu.getSpellManaCost(1) + " mana", 120, 6, 0x404040, false);
+        guiGraphics.drawString(this.font, "Sp3: " + menu.getSpellManaCost(2) + " mana", 180, 6, 0x404040, false);
+    }
 }
