@@ -4,6 +4,6 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 
-public record ConstellationPattern(String name, List<BlockPos> stars) {
-    
+public record ConstellationPattern(String name, List<BlockPos> stars, List<Connection> connections) {
+    public record Connection(int from, int to) {}
 }

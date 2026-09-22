@@ -7,6 +7,7 @@ import com.souls.starcraft.constellation.Constellations;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -22,6 +23,8 @@ public class AttunementAltarBlockEntity extends BlockEntity {
 
     private long ritualStartTime = -1;
     private static final int RITUAL_DURATION = 20 * 18;
+    private ConstellationPattern activeConstellation = null;
+    private int constellationRotation = -1;
 
     public long getRitualTicks() {
         return ritualStartTime;
@@ -29,6 +32,14 @@ public class AttunementAltarBlockEntity extends BlockEntity {
 
     public int getRitualDuration() {
         return RITUAL_DURATION;
+    }
+
+    public ConstellationPattern getActiveConstellation() {
+        return activeConstellation;
+    }
+
+    public int getConstellationRotation() {
+        return constellationRotation;
     }
 
     public boolean isRitualRunning() {
@@ -43,7 +54,9 @@ public class AttunementAltarBlockEntity extends BlockEntity {
         if (level == null || isRitualRunning()) return;
 
         if (!hasValidStructure()) return;
-        if (!matchesConstellation(Constellations.LIBELLULA)) return;
+        
+        updateConstellation();
+        if (activeConstellation == null) return;
 
         ritualStartTime = level.getGameTime();
         setChanged();
@@ -152,14 +165,29 @@ public class AttunementAltarBlockEntity extends BlockEntity {
         return true;
     }
 
-    private boolean matchesConstellation(ConstellationPattern pattern) {
+    private int findConstellationRotation(ConstellationPattern pattern) {
         for (int rotation = 0; rotation < 4; rotation++) {
             if (matchesConstellationRotation(pattern, rotation)) {
-                return true;
+                return rotation;
             }
         }
 
-        return false;
+        return -1;
+    }
+
+    private void updateConstellation() {
+        activeConstellation = null;
+        constellationRotation = -1;
+
+        for (ConstellationPattern pattern : Constellations.ALL) {
+            int rotation = findConstellationRotation(pattern);
+
+            if (rotation != -1) {
+                activeConstellation = pattern;
+                constellationRotation = rotation;
+                return;
+            }
+        }
     }
 
     public float getRitualProgress(float partialTick) {
@@ -181,14 +209,24 @@ public class AttunementAltarBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AttunementAltarBlockEntity blockEntity) {
-        if (level.isClientSide()) return;
+        if (level.isClientSide()) {
+            blockEntity.updateConstellation();
 
-        if (blockEntity.ritualStartTime > 0) {
-            blockEntity.ritualStartTime--;
+            ConstellationPattern constellation = blockEntity.getActiveConstellation();
 
-            if (blockEntity.ritualStartTime == 0 && !level.isClientSide()) {
-                blockEntity.setChanged();
+            int rotation = blockEntity.getConstellationRotation();
+
+            if (constellation != null && rotation != -1) {
+                for (BlockPos star : constellation.stars()) {
+                    BlockPos starOffset = blockEntity.rotateStar(star, rotation);
+                    
+                    BlockPos starPos = blockEntity.getBlockPos().offset(starOffset);
+
+                    level.addParticle(ParticleTypes.END_ROD, starPos.getX() + 0.5, starPos.getY() + 1.0, starPos.getZ() + 0.5, 0.0, 0.0, 0.0);
+                }
             }
+
+            return;
         }
     }
 
