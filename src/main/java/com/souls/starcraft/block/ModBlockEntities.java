@@ -1,6 +1,7 @@
 package com.souls.starcraft.block;
 
 import com.souls.starcraft.StarCraft;
+import com.souls.starcraft.block.custom.entity.AttunementAltarBlockEntity;
 import com.souls.starcraft.block.custom.entity.CelestialGatewayBlockEntity;
 import com.souls.starcraft.block.custom.entity.CrystalLensBlockEntity;
 import com.souls.starcraft.block.custom.entity.StarlightBasinBlockEntity;
@@ -21,4 +22,7 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrystalLensBlockEntity>> CRYSTAL_LENS = BLOCK_ENTITIES.register(
         "crystal_lens", () -> BlockEntityType.Builder.of(CrystalLensBlockEntity::new, ModBlocks.CRYSTAL_LENS.get()).build(null));
+    
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AttunementAltarBlockEntity>> ATTUNEMENT_ALTAR = BLOCK_ENTITIES.register(
+        "attunement_altar", () -> BlockEntityType.Builder.of(AttunementAltarBlockEntity::new, ModBlocks.ATTUNEMENT_ALTAR.get()).build(null));
 }

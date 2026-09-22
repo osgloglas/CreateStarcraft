@@ -1,10 +1,14 @@
 package com.souls.starcraft.event;
 
+import com.souls.starcraft.block.ModBlockEntities;
+import com.souls.starcraft.block.custom.entity.AttunementAltarOrbs;
+import com.souls.starcraft.block.custom.entity.renderer.AttunementAltarRenderer;
 import com.souls.starcraft.client.ModKeyMappings;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 @EventBusSubscriber (
@@ -19,5 +23,15 @@ public class ClientModBusEvents {
     public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
         event.register(ModKeyMappings.PREVIOUS_SPELL);
         event.register(ModKeyMappings.NEXT_SPELL);
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(AttunementAltarOrbs.LAYER_LOCATION, AttunementAltarOrbs::createBodyLayer);
+    }
+
+    @SubscribeEvent 
+    public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntities.ATTUNEMENT_ALTAR.get(), AttunementAltarRenderer::new);
     }
 }

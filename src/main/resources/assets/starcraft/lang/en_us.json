@@ -30,12 +30,15 @@
   "block.starcraft.marble_stairs": "Marble Stairs",
   "block.starcraft.marble_slab": "Marble Slab",
   "block.starcraft.marble_wall": "Marble Wall",
+  "block.starcraft.black_marble_block": "Black Marble Block",
+  "block.starcraft.marble_pedestal": "Marble Pedestal",
 
   "block.starcraft.starlight_crafter": "Starlight Crafter",
   "block.starcraft.starlight_basin": "Starlight Basin",
   "block.starcraft.celestial_gateway": "Celestial Gateway",
   "block.starcraft.crystal_lens": "Crystal Lens",
   "block.starcraft.lens_frame": "Lens Frame",
+  "block.starcraft.attunement_altar": "Attunement Altar",
 
   "fluid_type.starcraft.liquid_starlight": "Liquid Starlight",
 

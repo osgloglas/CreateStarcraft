@@ -7,6 +7,9 @@
         "starcraft:marble_wall",
         "starcraft:starlight_crafter",
         "starcraft:starlight_basin",
-        "starcraft:celestial_gateway"
+        "starcraft:celestial_gateway",
+        "starcraft:attunement_altar",
+        "starcraft:black_marble_block",
+        "starcraft:marble_pedestal"
     ]
 }
