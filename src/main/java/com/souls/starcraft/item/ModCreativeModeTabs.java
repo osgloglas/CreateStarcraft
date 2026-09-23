@@ -53,6 +53,7 @@ public class ModCreativeModeTabs {
             output.accept(ModBlocks.MARBLE_WALL);
             output.accept(ModBlocks.BLACK_MARBLE_BLOCK);
             output.accept(ModBlocks.MARBLE_PEDESTAL);
+            output.accept(ModBlocks.TELESCOPE);
 
             output.accept(ModBlocks.STARLIGHT_CRAFTER);
             output.accept(ModBlocks.STARLIGHT_BASIN);

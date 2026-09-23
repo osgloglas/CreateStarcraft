@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=north": {
+            "model": "starcraft:block/telescope"
+        },
+        "facing=east": {
+            "model": "starcraft:block/telescope",
+            "y": 90
+        },
+        "facing=south": {
+            "model": "starcraft:block/telescope",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "starcraft:block/telescope",
+            "y": 270
+        }
+    }
+}

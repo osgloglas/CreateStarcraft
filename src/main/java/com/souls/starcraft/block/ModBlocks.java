@@ -14,6 +14,7 @@ import com.souls.starcraft.block.custom.StarlightCrafterBlock;
 import com.souls.starcraft.block.custom.TelescopeBlock;
 import com.souls.starcraft.fluid.ModFluids;
 import com.souls.starcraft.item.ModItems;
+import com.souls.starcraft.item.custom.TelescopeBlockItem;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlocks {
@@ -55,8 +57,10 @@ public class ModBlocks {
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE).noOcclusion()));
     public static final DeferredBlock<Block> ATTUNEMENT_ALTAR = registerBlock("attunement_altar", () -> new AttunementAltarBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE).noOcclusion()));
-    public static final DeferredBlock<Block> TELESCOPE = registerBlock("telescope", () -> new TelescopeBlock(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> TELESCOPE = BLOCKS.register("telescope", () -> new TelescopeBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.GLASS).noOcclusion()));
+    public static final DeferredItem<TelescopeBlockItem> TELESCOPE_ITEM = ModItems.ITEMS.register("telescope",
+        () -> new TelescopeBlockItem(TELESCOPE.get(), new Item.Properties()));
 
     public static final DeferredBlock<Block> CRYSTAL_LENS = registerBlock("crystal_lens", () -> new CrystalLensBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.GLASS).noOcclusion()));
