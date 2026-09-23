@@ -24,4 +24,10 @@ public class ModDataComponents {
             .persistent(Codec.INT)
             .networkSynchronized(ByteBufCodecs.INT)
             .build());
+
+    public static final Supplier<DataComponentType<String>> CONSTELLATION = DATA_COMPONENTS.register(
+        "constellation", () -> DataComponentType.<String>builder()
+            .persistent(Codec.STRING)
+            .networkSynchronized(ByteBufCodecs.STRING_UTF8)
+            .build());
 }

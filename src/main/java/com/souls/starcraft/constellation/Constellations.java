@@ -8,7 +8,8 @@ public class Constellations {
     private Constellations() {}
 
     public static final ConstellationPattern LIBELLULA = new ConstellationPattern(
-        "Libellula1", List.of(
+        "libellula",
+        "Libellula", List.of(
             new BlockPos(-6, 0, -4),
             new BlockPos(-3, 0, -1),
             new BlockPos(0, 0, -4),
@@ -24,6 +25,16 @@ public class Constellations {
             new ConstellationPattern.Connection(3, 5),
             new ConstellationPattern.Connection(5, 6)
         ));
+
+    public static ConstellationPattern getById(String id) {
+        for (ConstellationPattern constellation : ALL) {
+            if (constellation.id().equals(id)) {
+                return constellation;
+            }
+        }
+
+        return null;
+    }
 
     public static final List<ConstellationPattern> ALL = List.of(
         LIBELLULA

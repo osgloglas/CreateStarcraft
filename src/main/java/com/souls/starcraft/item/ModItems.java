@@ -3,6 +3,7 @@ package com.souls.starcraft.item;
 import com.souls.starcraft.ModDataComponents;
 import com.souls.starcraft.StarCraft;
 import com.souls.starcraft.fluid.ModFluids;
+import com.souls.starcraft.item.custom.ConstellationPaperItem;
 import com.souls.starcraft.item.custom.StarWandItem;
 
 import net.minecraft.world.item.BucketItem;
@@ -19,6 +20,7 @@ public class ModItems {
     public static final DeferredItem<Item> STAR_WAND = ITEMS.register("star_wand", () -> 
         new StarWandItem(new Item.Properties().stacksTo(1).component(ModDataComponents.SELECTED_SPELL, 0)));
     public static final DeferredItem<Item> STARMETAL = ITEMS.register("starmetal", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CONSTELLATION_PAPER = ITEMS.register("constellation_paper", () -> new ConstellationPaperItem(new Item.Properties()));
 
     public static final DeferredItem<Item> LENS = ITEMS.register("lens", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> LIBELLULA_LENS = ITEMS.register("libellula_lens", () -> new Item(new Item.Properties()));

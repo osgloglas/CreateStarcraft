@@ -1,7 +1,5 @@
 package com.souls.starcraft.block.custom.entity.renderer;
 
-import org.joml.Matrix4f;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.souls.starcraft.StarCraft;
@@ -55,10 +53,10 @@ public class AttunementAltarRenderer implements BlockEntityRenderer<AttunementAl
             for (ConstellationPattern.Connection connection : constellation.connections()) {
                 BlockPos firstStar = constellation.stars().get(connection.from());
                 BlockPos secondStar = constellation.stars().get(connection.to());
-                
+
                 BlockPos first = rotateStar(firstStar, rotation);
                 BlockPos second = rotateStar(secondStar, rotation);
-                
+
                 StarlightBeamRenderer.render(poseStack, bufferSource, first.getX(), 0.95F, first.getZ(), second.getX(), 0.95F, second.getZ());
             }
         }

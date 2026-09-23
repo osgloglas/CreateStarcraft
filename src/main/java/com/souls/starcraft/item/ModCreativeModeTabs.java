@@ -23,6 +23,7 @@ public class ModCreativeModeTabs {
             output.accept(ModItems.STAR_WAND);
             output.accept(ModItems.LIQUID_STARLIGHT_BUCKET);
             output.accept(ModItems.STARMETAL);
+            output.accept(ModItems.CONSTELLATION_PAPER);
 
             output.accept(ModItems.LENS);
             output.accept(ModItems.LIBELLULA_LENS);

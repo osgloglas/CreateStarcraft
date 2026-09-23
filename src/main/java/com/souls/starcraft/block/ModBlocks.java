@@ -11,6 +11,7 @@ import com.souls.starcraft.block.custom.LensFrameBlock;
 import com.souls.starcraft.block.custom.MarblePedestalBlock;
 import com.souls.starcraft.block.custom.StarlightBasinBlock;
 import com.souls.starcraft.block.custom.StarlightCrafterBlock;
+import com.souls.starcraft.block.custom.TelescopeBlock;
 import com.souls.starcraft.fluid.ModFluids;
 import com.souls.starcraft.item.ModItems;
 
@@ -54,6 +55,8 @@ public class ModBlocks {
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE).noOcclusion()));
     public static final DeferredBlock<Block> ATTUNEMENT_ALTAR = registerBlock("attunement_altar", () -> new AttunementAltarBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.STONE).noOcclusion()));
+    public static final DeferredBlock<Block> TELESCOPE = registerBlock("telescope", () -> new TelescopeBlock(BlockBehaviour.Properties.of()
+        .strength(2f).requiresCorrectToolForDrops().sound(SoundType.GLASS).noOcclusion()));
 
     public static final DeferredBlock<Block> CRYSTAL_LENS = registerBlock("crystal_lens", () -> new CrystalLensBlock(BlockBehaviour.Properties.of()
         .strength(2f).requiresCorrectToolForDrops().sound(SoundType.GLASS).noOcclusion()));
