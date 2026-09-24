@@ -2,13 +2,17 @@ package com.souls.starcraft.network;
 
 import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.client.CelestialGatewayClient;
+import com.souls.starcraft.client.CelestialKnowledgeClient;
+import com.souls.starcraft.constellation.Constellations;
 import com.souls.starcraft.gateway.CelestialGatewayRegistry;
 import com.souls.starcraft.mana.StarlightMana;
 import com.souls.starcraft.spell.SpellCastingItem;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -51,6 +55,24 @@ public class ModNetworking {
             SpellSwitchPayload.TYPE,
             SpellSwitchPayload.STREAM_CODEC,
             ModNetworking::handleSpellSwitch
+        );
+
+        registrar.playToServer(
+            DiscoverConstellationPayload.TYPE,
+            DiscoverConstellationPayload.STREAM_CODEC,
+            ModNetworking::handleDiscoverConstellation
+        );
+
+        registrar.playToClient(
+            CelestialKnowledgePayload.TYPE,
+            CelestialKnowledgePayload.STREAM_CODEC,
+            ModNetworking::handleCelestialKnowledge
+        );
+
+        registrar.playToServer(
+            RequestCelestialKnowledgePayload.TYPE,
+            RequestCelestialKnowledgePayload.STREAM_CODEC,
+            ModNetworking::handleRequestCelestialKnowledge
         );
     }
 
@@ -159,6 +181,49 @@ public class ModNetworking {
             } else if (payload.direction() < 0) {
                 spellItem.previousSpell(stack);
             }
+        });
+    }
+
+    //constellation discovery
+    private static void handleDiscoverConstellation(final DiscoverConstellationPayload payload, final IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer player)) {
+                return;
+            }
+
+            var constellation = Constellations.getById(payload.cId());
+
+            if (constellation == null) {
+                return;
+            }
+
+            var knowledge = player.getData(ModDataAttachments.CELESTIAL_KNOWLEDGE.get());
+
+            boolean newlyDiscovered = knowledge.discover(payload.cId());
+
+            if (newlyDiscovered) {
+                player.sendSystemMessage(Component.literal("Discovered " + constellation.name() + "!"));
+
+                PacketDistributor.sendToPlayer(player, new CelestialKnowledgePayload(knowledge.getDiscoveredConstellations().stream().toList()));
+            }
+        });
+    }
+
+    private static void handleCelestialKnowledge(final CelestialKnowledgePayload payload, final IPayloadContext context) {
+        context.enqueueWork(() -> {
+            CelestialKnowledgeClient.set(payload.discoveredConstellations());
+        });
+    }
+
+    private static void handleRequestCelestialKnowledge(final RequestCelestialKnowledgePayload payload, final IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer player)) {
+                return;
+            }
+
+            var knowledge = player.getData(ModDataAttachments.CELESTIAL_KNOWLEDGE.get());
+
+            PacketDistributor.sendToPlayer(player, new CelestialKnowledgePayload(knowledge.getDiscoveredConstellations().stream().toList()));
         });
     }
 }
