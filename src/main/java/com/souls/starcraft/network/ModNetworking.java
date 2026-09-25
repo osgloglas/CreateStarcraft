@@ -1,10 +1,18 @@
 package com.souls.starcraft.network;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+import com.souls.starcraft.ModDataComponents;
 import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.client.CelestialGatewayClient;
 import com.souls.starcraft.client.CelestialKnowledgeClient;
+import com.souls.starcraft.constellation.ConstellationPaperManager;
+import com.souls.starcraft.constellation.ConstellationPattern;
 import com.souls.starcraft.constellation.Constellations;
 import com.souls.starcraft.gateway.CelestialGatewayRegistry;
+import com.souls.starcraft.item.custom.ConstellationPaperItem;
 import com.souls.starcraft.mana.StarlightMana;
 import com.souls.starcraft.spell.SpellCastingItem;
 
@@ -204,7 +212,15 @@ public class ModNetworking {
             if (newlyDiscovered) {
                 player.sendSystemMessage(Component.literal("Discovered " + constellation.name() + "!"));
 
+                ConstellationPaperManager.writeConstellationToBlankPaper(player, payload.cId());
+
                 PacketDistributor.sendToPlayer(player, new CelestialKnowledgePayload(knowledge.getDiscoveredConstellations().stream().toList()));
+            } else {
+                boolean wrotePaper = ConstellationPaperManager.writeConstellationCopy(player, payload.cId());
+
+                if (wrotePaper) {
+                    player.sendSystemMessage(Component.literal("Recorded " + constellation.name() + " on constellation paper!"));
+                }
             }
         });
     }

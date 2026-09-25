@@ -57,22 +57,26 @@ public class TelescopeScreen extends Screen {
         guiGraphics.enableScissor(viewLeft, viewTop, viewLeft + viewWidth, viewTop + viewHeight);
         guiGraphics.blit(TELESCOPE_SKY, viewLeft - (int) panX, viewTop - (int) panY, SKY_WIDTH, SKY_HEIGHT, 0.0F, 0.0F, SKY_WIDTH, SKY_HEIGHT, SKY_WIDTH, SKY_HEIGHT);
 
-        var libellula = TelescopeConstellations.LIBELLULA;
-        if (CelestialKnowledgeClient.hasDiscovered(libellula.cId())) {
-            var constellation = Constellations.getById(libellula.cId());
+        for (var telescopeConstellation : TelescopeConstellations.ALL) {
+            if (!CelestialKnowledgeClient.hasDiscovered(telescopeConstellation.cId())) {
+                continue;
+            }
 
-            if (constellation != null) {
-                for (var connection : constellation.connections()) {
-                    var starA = libellula.stars().get(connection.from());
-                    var starB = libellula.stars().get(connection.to());
-                
-                    float starAX = viewLeft + (starA.x() * skyScale) - (float) panX;
-                    float starAY = viewTop + (starA.y() * skyScale) - (float) panY;
-                    float starBX = viewLeft + (starB.x() * skyScale) - (float) panX;
-                    float starBY = viewTop + (starB.y() * skyScale) - (float) panY;
+            var constellation = Constellations.getById(telescopeConstellation.cId());
 
-                    drawConstellationBeam(guiGraphics, starAX, starAY, starBX, starBY);
-                }
+            if (constellation == null) {
+                continue;
+            }
+
+            for (var connection : constellation.connections()) {
+                var starA = telescopeConstellation.stars().get(connection.from());
+                var starB = telescopeConstellation.stars().get(connection.to());
+            
+                float starAX = viewLeft + (starA.x() * skyScale) - (float) panX;
+                float starAY = viewTop + (starA.y() * skyScale) - (float) panY;
+                float starBX = viewLeft + (starB.x() * skyScale) - (float) panX;
+                float starBY = viewTop + (starB.y() * skyScale) - (float) panY;
+                drawConstellationBeam(guiGraphics, starAX, starAY, starBX, starBY);
             }
         }
 
@@ -134,13 +138,7 @@ public class TelescopeScreen extends Screen {
         int viewWidth = Math.round(VIEW_WIDTH * skyScale);
         int viewHeight = Math.round(VIEW_HEIGHT * skyScale);
 
-        //debug
-        var libellula = TelescopeConstellations.LIBELLULA;
-        var debugStar = libellula.stars().get(3);
-
-        int starX = viewLeft + Math.round(debugStar.x() * skyScale) - (int) panX;
-        int starY = viewTop + Math.round(debugStar.y() * skyScale) - (int) panY;
-
+        //star hitbox
         int hitBoxRadius = 16;
 
         boolean insideViewport = mouseX >= viewLeft
@@ -148,15 +146,24 @@ public class TelescopeScreen extends Screen {
             && mouseY >= viewTop
             && mouseY <= viewTop + viewHeight;
 
-        boolean insideStar = mouseX >= starX - hitBoxRadius
-            && mouseX <= starX + hitBoxRadius
-            && mouseY >= starY - hitBoxRadius
-            && mouseY <= starY + hitBoxRadius;
+        if (insideViewport) {
+            for (var telescopeConstellation : TelescopeConstellations.ALL) {
+                for (var star : telescopeConstellation.stars()) {
+                    int starX = viewLeft + Math.round(star.x() * skyScale) - (int) panX;
+                    int starY = viewTop + Math.round(star.y() * skyScale) - (int) panY;
 
-        if (insideViewport && insideStar) {
-            PacketDistributor.sendToServer(new DiscoverConstellationPayload(libellula.cId()));
+                    boolean insideStar = mouseX >= starX - hitBoxRadius
+                        && mouseX <= starX + hitBoxRadius
+                        && mouseY >= starY - hitBoxRadius
+                        && mouseY <= starY + hitBoxRadius;
 
-            return true;
+                    if (insideStar) {
+                        PacketDistributor.sendToServer(new DiscoverConstellationPayload(telescopeConstellation.cId()));
+
+                        return true;
+                    }
+                }
+            }
         }
 
         return super.mouseClicked(mouseX, mouseY, button);

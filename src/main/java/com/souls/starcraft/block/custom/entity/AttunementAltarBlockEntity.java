@@ -1,10 +1,12 @@
 package com.souls.starcraft.block.custom.entity;
 
+import com.souls.starcraft.ModDataComponents;
 import com.souls.starcraft.block.ModBlockEntities;
 import com.souls.starcraft.block.ModBlocks;
 import com.souls.starcraft.constellation.ConstellationPattern;
 import com.souls.starcraft.constellation.Constellations;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -210,6 +213,34 @@ public class AttunementAltarBlockEntity extends BlockEntity {
 
     public static void tick(Level level, BlockPos pos, BlockState state, AttunementAltarBlockEntity blockEntity) {
         if (level.isClientSide()) {
+            //paper logics
+            Minecraft minecraft = Minecraft.getInstance();
+
+            if (minecraft.player != null) {
+                ItemStack heldStack = minecraft.player.getMainHandItem();
+
+                String constellationId = heldStack.get(ModDataComponents.CONSTELLATION.get());
+
+                if (constellationId == null) {
+                    heldStack = minecraft.player.getOffhandItem();
+
+                    constellationId = heldStack.get(ModDataComponents.CONSTELLATION.get());
+                }
+
+                if (constellationId != null) {
+                    ConstellationPattern paperConstellation = Constellations.getById(constellationId);
+
+                    if (paperConstellation != null && !paperConstellation.stars().isEmpty()) {
+                        for (BlockPos star : paperConstellation.stars()) {
+                            BlockPos starPos = blockEntity.getBlockPos().offset(star);
+
+                            level.addParticle(ParticleTypes.END_ROD, starPos.getX() + 0.5, starPos.getY() + 0.2, starPos.getZ() + 0.5, 0.0, 0.05, 0.0);
+                        }
+                    }
+                }
+            }
+
+            //constellation on ground
             blockEntity.updateConstellation();
 
             ConstellationPattern constellation = blockEntity.getActiveConstellation();

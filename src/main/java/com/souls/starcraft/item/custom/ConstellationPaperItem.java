@@ -3,14 +3,14 @@ package com.souls.starcraft.item.custom;
 import java.util.List;
 
 import com.souls.starcraft.ModDataComponents;
+import com.souls.starcraft.constellation.ConstellationPaperManager;
 import com.souls.starcraft.constellation.ConstellationPattern;
 import com.souls.starcraft.constellation.Constellations;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -19,6 +19,21 @@ import net.minecraft.world.level.Level;
 public class ConstellationPaperItem extends Item {
     public ConstellationPaperItem(Properties properties) {
         super(properties);
+    }
+
+    @Override 
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+
+        if (level.isClientSide()) {
+            return;
+        }
+
+        if (!(entity instanceof ServerPlayer player)) {
+            return;
+        }
+
+        ConstellationPaperManager.assignRandomConstellationToBlankPaper(player, stack);
     }
 
     @Override 
@@ -34,17 +49,5 @@ public class ConstellationPaperItem extends Item {
         }
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-    }
-
-    //temp
-    @Override 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-
-        if (!level.isClientSide()) {
-            stack.set(ModDataComponents.CONSTELLATION.get(), "libellula");
-        }
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }
