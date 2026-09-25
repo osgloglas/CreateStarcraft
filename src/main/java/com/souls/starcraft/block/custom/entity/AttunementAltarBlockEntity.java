@@ -1,10 +1,14 @@
 package com.souls.starcraft.block.custom.entity;
 
+import java.util.List;
+
 import com.souls.starcraft.ModDataComponents;
 import com.souls.starcraft.block.ModBlockEntities;
 import com.souls.starcraft.block.ModBlocks;
+import com.souls.starcraft.constellation.ConstellationLenses;
 import com.souls.starcraft.constellation.ConstellationPattern;
 import com.souls.starcraft.constellation.Constellations;
+import com.souls.starcraft.item.ModItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -14,10 +18,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 public class AttunementAltarBlockEntity extends BlockEntity {
     public AttunementAltarBlockEntity(BlockPos pos, BlockState state) {
@@ -56,6 +63,8 @@ public class AttunementAltarBlockEntity extends BlockEntity {
     public void startRitual() {
         if (level == null || isRitualRunning()) return;
 
+        if (!isAstralNight()) return;
+
         if (!hasValidStructure()) return;
         
         updateConstellation();
@@ -69,6 +78,14 @@ public class AttunementAltarBlockEntity extends BlockEntity {
 
             level.sendBlockUpdated(worldPosition, state, state, 3);
         }
+    }
+
+    private boolean hasRitualFinished() {
+        if (level == null || ritualStartTime < 0) {
+            return false;
+        }
+
+        return level.getGameTime() - ritualStartTime >= RITUAL_DURATION;
     }
 
     private boolean hasValidStructure() {
@@ -213,6 +230,12 @@ public class AttunementAltarBlockEntity extends BlockEntity {
 
     public static void tick(Level level, BlockPos pos, BlockState state, AttunementAltarBlockEntity blockEntity) {
         if (level.isClientSide()) {
+            if (!blockEntity.isAstralNight()) {
+                blockEntity.activeConstellation = null;
+                blockEntity.constellationRotation = -1;
+                return;
+            }
+
             //paper logics
             Minecraft minecraft = Minecraft.getInstance();
 
@@ -259,6 +282,80 @@ public class AttunementAltarBlockEntity extends BlockEntity {
 
             return;
         }
+
+        //lenses
+        if (!blockEntity.isAstralNight()) return;
+
+        if (blockEntity.isRitualRunning()) {
+            return;
+        }
+
+        if (blockEntity.hasRitualFinished() && blockEntity.activeConstellation != null) {
+            AABB lensArea = new AABB(pos).inflate(0.5);
+
+            List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, lensArea);
+
+            for (ItemEntity itemEntity : items) {
+                ItemStack stack = itemEntity.getItem();
+
+                if (!stack.is(ModItems.LENS.get())) {
+                    continue;
+                }
+
+                Item finishedLens = ConstellationLenses.getLensForConstellation(blockEntity.activeConstellation.id());
+
+                if (finishedLens != null) {
+                    itemEntity.setItem(new ItemStack(finishedLens));
+                }
+
+                break;
+            }         
+            
+            blockEntity.ritualStartTime = -1;
+            blockEntity.setChanged();
+            return;
+        }
+
+        blockEntity.updateConstellation();
+
+        if (blockEntity.activeConstellation == null) return;
+
+        AABB lensArea = new AABB(pos).inflate(0.5);
+
+        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, lensArea);
+
+        for (ItemEntity itemEntity : items) {
+            ItemStack stack = itemEntity.getItem();
+
+            if (!stack.is(ModItems.LENS.get())) {
+                continue;
+            }
+
+            if (stack.getCount() > 1) {
+                ItemStack remainingStack = stack.copy();
+                remainingStack.shrink(1);
+
+                ItemEntity remainingLenses = new ItemEntity(level, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), remainingStack);
+
+                level.addFreshEntity(remainingLenses);
+
+                itemEntity.setItem(stack.copyWithCount(1));
+            }
+
+            itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1.05, pos.getZ() + 0.5);
+            itemEntity.setDeltaMovement(0.0, 0.0, 0.0);
+
+            blockEntity.startRitual();
+            break;
+        }
+    }
+
+    private boolean isAstralNight() {
+        if (level == null) return false;
+
+        long timeOfDay = level.getDayTime() % 24000L;
+
+        return timeOfDay >= 13000L && timeOfDay < 23000L;
     }
 
     @Override

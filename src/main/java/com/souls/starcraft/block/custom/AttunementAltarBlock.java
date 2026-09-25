@@ -7,8 +7,6 @@ import com.souls.starcraft.block.ModBlockEntities;
 import com.souls.starcraft.block.custom.entity.AttunementAltarBlockEntity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -68,25 +65,5 @@ public class AttunementAltarBlock extends BaseEntityBlock {
         BlockEntityType<T> blockEntityType
     ) {
         return createTickerHelper(blockEntityType, ModBlockEntities.ATTUNEMENT_ALTAR.get(), AttunementAltarBlockEntity::tick);
-    }
-
-    //temp
-    @Override 
-    protected InteractionResult useWithoutItem(
-        BlockState state,
-        Level level,
-        BlockPos pos,
-        Player player,
-        BlockHitResult hitResult
-    ) {
-        if (!level.isClientSide()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-
-            if (blockEntity instanceof AttunementAltarBlockEntity altar) {
-                altar.startRitual();
-            }
-        }
-
-        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }
