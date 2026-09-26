@@ -4,6 +4,7 @@ import com.souls.starcraft.ModEffects;
 import com.souls.starcraft.ModMenuTypes;
 import com.souls.starcraft.client.ModKeyMappings;
 import com.souls.starcraft.client.StarWandScreen;
+import com.souls.starcraft.client.StarlightCrafterScreen;
 import com.souls.starcraft.network.SpellSwitchPayload;
 import com.souls.starcraft.spell.TimedLightManager;
 import com.souls.starcraft.spell.TimedTickSpeedManager;
@@ -28,6 +29,7 @@ public class ClientModEvents {
     @SubscribeEvent 
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.STAR_WAND.get(), StarWandScreen::new);
+        event.register(ModMenuTypes.STARLIGHT_CRAFTER.get(), StarlightCrafterScreen::new);
     }
 
     @SubscribeEvent 

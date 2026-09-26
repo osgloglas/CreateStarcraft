@@ -1,14 +1,32 @@
 package com.souls.starcraft.block.custom;
 
+import javax.annotation.Nullable;
+
+import com.mojang.serialization.MapCodec;
+import com.souls.starcraft.block.custom.entity.StarlightCrafterBlockEntity;
+import com.souls.starcraft.menu.StarlightCrafterMenu;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class StarlightCrafterBlock extends Block {
+public class StarlightCrafterBlock extends BaseEntityBlock {
     public StarlightCrafterBlock(Properties properties) {
         super(properties);
     }
@@ -28,5 +46,43 @@ public class StarlightCrafterBlock extends Block {
         CollisionContext context
     ) {
         return SHAPE;
+    }
+
+    @Override 
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(StarlightCrafterBlock::new);
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new StarlightCrafterBlockEntity(pos, state);
+    }
+
+    @Override 
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+
+            if (blockEntity instanceof StarlightCrafterBlockEntity crafter) {
+                serverPlayer.openMenu(new MenuProvider() {
+                    @Override 
+                    public Component getDisplayName() {
+                        return Component.translatable("container.starcraft.starlight_crafter");
+                    }
+
+                    @Override 
+                    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+                        return new StarlightCrafterMenu(containerId, inventory, crafter);
+                    }
+                }, buf -> buf.writeBlockPos(pos));
+            }
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

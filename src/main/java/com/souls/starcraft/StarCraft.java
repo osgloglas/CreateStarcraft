@@ -6,7 +6,6 @@ import com.mojang.logging.LogUtils;
 import com.souls.starcraft.attachment.ModDataAttachments;
 import com.souls.starcraft.block.ModBlockEntities;
 import com.souls.starcraft.block.ModBlocks;
-import com.souls.starcraft.block.custom.entity.renderer.CelestialGatewayRenderer;
 import com.souls.starcraft.client.StarlightManaHud;
 import com.souls.starcraft.event.StarlightManaEvents;
 import com.souls.starcraft.fluid.ModFluids;
@@ -14,6 +13,7 @@ import com.souls.starcraft.item.ModCreativeModeTabs;
 import com.souls.starcraft.item.ModItems;
 import com.souls.starcraft.mana.StarlightManaHandler;
 import com.souls.starcraft.network.ModNetworking;
+import com.souls.starcraft.recipe.ModRecipes;
 import com.souls.starcraft.spell.ConstellationRegistry;
 
 import net.neoforged.bus.api.IEventBus;
@@ -68,6 +68,9 @@ public class StarCraft {
         ModMenuTypes.MENUS.register(modEventBus);
 
         ModEffects.MOB_EFFECTS.register(modEventBus);
+
+        ModRecipes.RECIPE_TYPES.register(modEventBus);
+        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);

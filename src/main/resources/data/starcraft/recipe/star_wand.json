@@ -1,6 +1,5 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
+    "type": "starcraft:starlight_crafting",
     "key": {
         "A": {
             "item": "starcraft:aquamarine"

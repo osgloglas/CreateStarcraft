@@ -5,6 +5,7 @@ import com.souls.starcraft.block.custom.entity.AttunementAltarBlockEntity;
 import com.souls.starcraft.block.custom.entity.CelestialGatewayBlockEntity;
 import com.souls.starcraft.block.custom.entity.CrystalLensBlockEntity;
 import com.souls.starcraft.block.custom.entity.StarlightBasinBlockEntity;
+import com.souls.starcraft.block.custom.entity.StarlightCrafterBlockEntity;
 import com.souls.starcraft.block.custom.entity.TelescopeBlockEntity;
 
 import net.minecraft.core.registries.Registries;
@@ -14,6 +15,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, StarCraft.MODID);
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StarlightCrafterBlockEntity>> STARLIGHT_CRAFTER = BLOCK_ENTITIES.register(
+        "starlight_crafter", () -> BlockEntityType.Builder.of(StarlightCrafterBlockEntity::new, ModBlocks.STARLIGHT_CRAFTER.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StarlightBasinBlockEntity>> STARLIGHT_BASIN = BLOCK_ENTITIES.register(
         "starlight_basin", () -> BlockEntityType.Builder.of(StarlightBasinBlockEntity::new, ModBlocks.STARLIGHT_BASIN.get()).build(null));

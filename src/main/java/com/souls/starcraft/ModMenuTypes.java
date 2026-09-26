@@ -3,6 +3,7 @@ package com.souls.starcraft;
 import java.util.function.Supplier;
 
 import com.souls.starcraft.menu.StarWandMenu;
+import com.souls.starcraft.menu.StarlightCrafterMenu;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
@@ -14,6 +15,8 @@ public class ModMenuTypes {
         Registries.MENU, StarCraft.MODID);
 
     public static final Supplier<MenuType<StarWandMenu>> STAR_WAND = MENUS.register("star_wand", () ->
-        IMenuTypeExtension.create(StarWandMenu::new)
-    );
+        IMenuTypeExtension.create(StarWandMenu::new));
+
+    public static final Supplier<MenuType<StarlightCrafterMenu>> STARLIGHT_CRAFTER = MENUS.register("starlight_crafter", () ->
+        IMenuTypeExtension.create(StarlightCrafterMenu::new));
 }
