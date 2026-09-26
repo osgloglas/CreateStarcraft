@@ -28,10 +28,10 @@ public class CrystalLensBlock extends BaseEntityBlock {
     }
 
     private static final VoxelShape SHAPE = Shapes.or(
-        Block.box(0, 0, 0, 2, 16, 2),
-        Block.box(14, 0, 0, 16, 16, 2),
-        Block.box(14, 0, 14, 16, 16, 16),
-        Block.box(0, 0, 14, 2, 16, 16)
+        Block.box(0, 0, 0, 2, 9, 2),
+        Block.box(0, 0, 14, 2, 9, 16),
+        Block.box(14, 0, 14, 16, 9, 16),
+        Block.box(14, 0, 0, 16, 9, 2)
     );
 
     @Override

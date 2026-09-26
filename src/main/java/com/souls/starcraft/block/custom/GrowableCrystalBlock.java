@@ -11,7 +11,7 @@ public class GrowableCrystalBlock extends Block {
     public static final MapCodec<GrowableCrystalBlock> CODEC =
         simpleCodec(GrowableCrystalBlock::new);
 
-    public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 2);
+    public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
 
     public GrowableCrystalBlock(Properties properties) {
         super(properties);

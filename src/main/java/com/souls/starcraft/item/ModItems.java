@@ -21,6 +21,7 @@ public class ModItems {
         new StarWandItem(new Item.Properties().stacksTo(1).component(ModDataComponents.SELECTED_SPELL, 0)));
     public static final DeferredItem<Item> STARMETAL = ITEMS.register("starmetal", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> CONSTELLATION_PAPER = ITEMS.register("constellation_paper", () -> new ConstellationPaperItem(new Item.Properties()));
+    public static final DeferredItem<Item> CRYSTAL = ITEMS.register("crystal", () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> LENS = ITEMS.register("lens", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> LIBELLULA_LENS = ITEMS.register("libellula_lens", () -> new Item(new Item.Properties()));

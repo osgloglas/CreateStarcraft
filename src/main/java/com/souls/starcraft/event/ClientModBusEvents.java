@@ -4,6 +4,7 @@ import com.souls.starcraft.block.ModBlockEntities;
 import com.souls.starcraft.block.custom.entity.AttunementAltarOrbs;
 import com.souls.starcraft.block.custom.entity.TelescopeModel;
 import com.souls.starcraft.block.custom.entity.renderer.AttunementAltarRenderer;
+import com.souls.starcraft.block.custom.entity.renderer.CrystalLensRenderer;
 import com.souls.starcraft.block.custom.entity.renderer.TelescopeRenderer;
 import com.souls.starcraft.client.ModKeyMappings;
 
@@ -37,5 +38,6 @@ public class ClientModBusEvents {
     public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.ATTUNEMENT_ALTAR.get(), AttunementAltarRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.TELESCOPE_BE.get(), TelescopeRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CRYSTAL_LENS.get(), CrystalLensRenderer::new);
     }
 }

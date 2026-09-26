@@ -10,6 +10,7 @@
         "starcraft:celestial_gateway",
         "starcraft:attunement_altar",
         "starcraft:black_marble_block",
-        "starcraft:marble_pedestal"
+        "starcraft:marble_pedestal",
+        "starcraft:growable_crystal"
     ]
 }

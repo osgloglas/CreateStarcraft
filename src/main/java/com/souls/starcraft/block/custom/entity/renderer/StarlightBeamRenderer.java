@@ -27,11 +27,18 @@ public class StarlightBeamRenderer {
         float dx = x2 - x1;
         float dz = z2 - z1;
 
-        float length = (float) Math.sqrt(dx * dx + dz * dz);
-        if (length == 0.0F) return;
+        float horizontalLength = (float) Math.sqrt(dx * dx + dz * dz);
 
-        float sideX = -dz / length;
-        float sideZ = dx / length;
+        float sideX;
+        float sideZ;
+
+        if (horizontalLength < 0.0001F) {
+            sideX = 1.0F;
+            sideZ = 0.0F;
+        } else {
+            sideX = -dz / horizontalLength;
+            sideZ = dx / horizontalLength;
+        }
 
         float radius = 0.06F;
 
